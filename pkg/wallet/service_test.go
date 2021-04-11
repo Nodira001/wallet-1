@@ -184,3 +184,73 @@ func TestService_Repeat_fail(t *testing.T) {
 		return
 	}
 }
+func TestService_Favorite_success(t *testing.T) {
+	var s Service
+	_, payments, err := s.addAccount(struct {
+		phone    types.Phone
+		balance  types.Money
+		payments []struct {
+			amount   types.Money
+			category types.PaymentCategory
+		}
+	}{
+		phone:   "+992 00440 3883",
+		balance: 10_000_00,
+		payments: []struct {
+			amount   types.Money
+			category types.PaymentCategory
+		}{
+			{amount: 1_000_00, category: "auto"},
+		},
+	})
+	if err != nil {
+		t.Error("207")
+		return
+	}
+	_, err = s.FavoritePayment(payments[0].ID, "Jenya")
+	if err != nil {
+		t.Error("awd")
+	}
+
+}
+func TestService_Favorite_fail(t *testing.T) {
+
+}
+func TestService_PayFromFavorite_success(t *testing.T) {
+	var s Service
+	acc, _, err := s.addAccount(struct {
+		phone    types.Phone
+		balance  types.Money
+		payments []struct {
+			amount   types.Money
+			category types.PaymentCategory
+		}
+	}{
+		phone:   "+992 00440 3883",
+		balance: 10_000_00,
+		payments: []struct {
+			amount   types.Money
+			category types.PaymentCategory
+		}{
+			{amount: 1_000_00, category: "auto"},
+		},
+	})
+	if err != nil {
+		t.Error("207")
+		return
+	}
+	p, _ := s.Pay(acc.ID, 1000, "cars")
+	fav, err := s.FavoritePayment(p.ID, "Jenya")
+	if err != nil {
+		t.Error("244")
+	}
+
+	_, err = s.PayFromFavorite(fav.ID)
+	if err != nil {
+		t.Error("249", err)
+	}
+
+}
+func TestService_PayFromFavorite_fail(t *testing.T) {
+
+}
