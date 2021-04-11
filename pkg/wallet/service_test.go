@@ -144,7 +144,7 @@ func TestService_Repeat_fail(t *testing.T) {
 	payment.Amount += 10000000
 	_, err = s.Repeat(payment.ID)
 	if err != ErrNotEnoughBalance {
-		t.Error("Repeat() err 132",err)
+		t.Error("Repeat() err 132", err)
 		return
 	}
 }
