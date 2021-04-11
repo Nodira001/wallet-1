@@ -40,6 +40,13 @@ var defaultTestAccount = testAccount{
 	},
 }
 
+type testService struct {
+	*Service
+}
+
+func newTestService() *testService {
+	return &testService{Service: &Service{}}
+}
 func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
 	for _, account := range s.accounts {
 		if account.Phone == phone {
@@ -204,7 +211,7 @@ func (s *Service) Repeat(paymentID string) (*types.Payment, error) {
 	return newPayment, nil
 }
 
-func (s *Service) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
+func (s *testService) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
 	account, err := s.RegisterAccount(data.phone)
 	if err != nil {
 		return nil, nil, fmt.Errorf("cant register addAcount()")

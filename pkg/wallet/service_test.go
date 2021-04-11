@@ -120,7 +120,7 @@ func TestService_FindPaymentByID_fail(t *testing.T) {
 }
 
 func TestService_Repeat_success(t *testing.T) {
-	s := &Service{}
+	s := newTestService()
 
 	_, payments, err := s.addAccount(defaultTestAccount)
 	if err != nil {
@@ -135,7 +135,7 @@ func TestService_Repeat_success(t *testing.T) {
 	}
 }
 func TestService_Repeat_fail(t *testing.T) {
-	s := &Service{}
+	s := newTestService()
 
 	_, payments, err := s.addAccount(defaultTestAccount)
 	if err != nil {
