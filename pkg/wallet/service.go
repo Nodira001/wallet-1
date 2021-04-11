@@ -212,7 +212,7 @@ func (s *testService) Repeat(paymentID string) (*types.Payment, error) {
 	return newPayment, nil
 }
 
-func (s *testService) addAcoount(data testAccount) (*types.Account, []*types.Payment, error) {
+func (s *testService) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
 	account, err := s.RegisterAccount(data.phone)
 	if err != nil {
 		return nil, nil, fmt.Errorf("cant register addAcount()")
