@@ -20,16 +20,6 @@ type Service struct {
 	payments      []*types.Payment
 }
 
-type testAccount struct {
-	phone    types.Phone
-	balance  types.Money
-	payments []struct {
-		amount   types.Money
-		category types.PaymentCategory
-	}
-}
-
- 
 func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
 	for _, account := range s.accounts {
 		if account.Phone == phone {
@@ -182,7 +172,14 @@ func (s *Service) Repeat(paymentID string) (*types.Payment, error) {
 	return paymentNew, nil
 }
 
-func (s *Service) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
+func (s *Service) addAccount(data struct {
+	phone    types.Phone
+	balance  types.Money
+	payments []struct {
+		amount   types.Money
+		category types.PaymentCategory
+	}
+}) (*types.Account, []*types.Payment, error) {
 	account, err := s.RegisterAccount(data.phone)
 	if err != nil {
 		return nil, nil, fmt.Errorf("cant register addAcount()")
