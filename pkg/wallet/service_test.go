@@ -120,22 +120,40 @@ func TestService_FindPaymentByID_fail(t *testing.T) {
 }
 
 func TestService_Repeat_success(t *testing.T) {
-	s := newTestService()
+	var svc Service
 
-	_, payments, err := s.addAccount(defaultTestAccount)
+	account, err := svc.RegisterAccount("+992000000001")
+
 	if err != nil {
-		t.Error("Repeat() err 126")
-		return
+		t.Errorf("method RegisterAccount returned not nil error, account => %v", account)
 	}
-	payment := payments[0]
-	_, err = s.Repeat(payment.ID)
+
+	err = svc.Deposit(account.ID, 100_00)
 	if err != nil {
-		t.Error("Repeat() err 132")
-		return
+		t.Errorf("method Deposit returned not nil error, error => %v", err)
 	}
+
+	payment, err := svc.Pay(account.ID, 10_00, "Cafe")
+
+	if err != nil {
+		t.Errorf("method Pay returned not nil error, account => %v", account)
+	}
+
+	pay, err := svc.FindPaymentByID(payment.ID)
+
+	if err != nil {
+		t.Errorf("method FindPaymentByID returned not nil error, payment => %v", payment)
+	}
+
+	paymentNew, err := svc.Repeat(pay.ID)
+
+	if err != nil {
+		t.Errorf("method Repat returned not nil error, paymentNew => %v", paymentNew)
+	}
+
 }
 func TestService_Repeat_fail(t *testing.T) {
-	s := newTestService()
+	var s Service
 
 	_, payments, err := s.addAccount(defaultTestAccount)
 	if err != nil {

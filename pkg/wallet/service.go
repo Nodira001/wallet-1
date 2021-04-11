@@ -188,30 +188,17 @@ func (s *Service) addAccountWithBalance(phone types.Phone, balance types.Money) 
 func (s *Service) Repeat(paymentID string) (*types.Payment, error) {
 
 	payment, err := s.FindPaymentByID(paymentID)
-
 	if err != nil {
 		return nil, err
 	}
-
-	account, err := s.FindAccountByID(payment.AccountID)
-
+	paymentNew, err := s.Pay(payment.AccountID, payment.Amount, payment.Category)
 	if err != nil {
 		return nil, err
 	}
-
-	if account.Balance < payment.Amount {
-		return nil, ErrNotEnoughBalance
-	}
-
-	newPayment, err := s.Pay(payment.AccountID, payment.Amount, payment.Category)
-	if err != nil {
-		return nil, err
-	}
-
-	return newPayment, nil
+	return paymentNew, nil
 }
 
-func (s *testService) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
+func (s *Service) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
 	account, err := s.RegisterAccount(data.phone)
 	if err != nil {
 		return nil, nil, fmt.Errorf("cant register addAcount()")
