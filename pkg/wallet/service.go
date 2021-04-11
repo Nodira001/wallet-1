@@ -29,24 +29,7 @@ type testAccount struct {
 	}
 }
 
-var defaultTestAccount = testAccount{
-	phone:   "+992 00440 3883",
-	balance: 10_000_00,
-	payments: []struct {
-		amount   types.Money
-		category types.PaymentCategory
-	}{
-		{amount: 1_000_00, category: "auto"},
-	},
-}
-
-type testService struct {
-	*Service
-}
-
-func newTestService() *testService {
-	return &testService{Service: &Service{}}
-}
+ 
 func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
 	for _, account := range s.accounts {
 		if account.Phone == phone {
@@ -61,6 +44,7 @@ func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
 	}
 	s.accounts = append(s.accounts, account)
 	return account, nil
+
 }
 
 func (s *Service) Deposit(accountID int64, amount types.Money) error {

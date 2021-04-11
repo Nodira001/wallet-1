@@ -155,7 +155,16 @@ func TestService_Repeat_success(t *testing.T) {
 func TestService_Repeat_fail(t *testing.T) {
 	var s Service
 
-	_, payments, err := s.addAccount(defaultTestAccount)
+	_, payments, err := s.addAccount(testAccount{
+		phone:   "+992 00440 3883",
+		balance: 10_000_00,
+		payments: []struct {
+			amount   types.Money
+			category types.PaymentCategory
+		}{
+			{amount: 1_000_00, category: "auto"},
+		},
+	})
 	if err != nil {
 		t.Error("Repeat() err 126")
 		return
