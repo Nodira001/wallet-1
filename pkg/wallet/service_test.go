@@ -118,3 +118,33 @@ func TestService_FindPaymentByID_fail(t *testing.T) {
 	}
 
 }
+
+func TestService_Repeat_success(t *testing.T) {
+	s := newTestService()
+	_, payments, err := s.addAcoount(defaultTestAccount)
+	if err != nil {
+		t.Error("Repeat() err 126")
+		return
+	}
+	payment := payments[0]
+	_, err = s.Repeat(payment.ID)
+	if err != nil {
+		t.Error("Repeat() err 132")
+		return
+	}
+}
+func TestService_Repeat_fail(t *testing.T) {
+	s := newTestService()
+	_, payments, err := s.addAcoount(defaultTestAccount)
+	if err != nil {
+		t.Error("Repeat() err 126")
+		return
+	}
+	payment := payments[0]
+	payment.Amount += 10000000
+	_, err = s.Repeat(payment.ID)
+	if err != ErrNotEnoughBalance {
+		t.Error("Repeat() err 132",err)
+		return
+	}
+}

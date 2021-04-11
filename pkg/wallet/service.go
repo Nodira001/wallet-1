@@ -2,6 +2,8 @@ package wallet
 
 import (
 	"errors"
+	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/iqbol007/wallet/pkg/types"
 )
@@ -33,6 +35,17 @@ type testAccount struct {
 		amount   types.Money
 		category types.PaymentCategory
 	}
+}
+
+var defaultTestAccount = testAccount{
+	phone:   "+992 00440 3883",
+	balance: 10_000_00,
+	payments: []struct {
+		amount   types.Money
+		category types.PaymentCategory
+	}{
+		{amount: 1_000_00, category: "auto"},
+	},
 }
 
 func (s *testService) RegisterAccount(phone types.Phone) (*types.Account, error) {
@@ -171,4 +184,49 @@ func (s *testService) addAccountWithBalance(phone types.Phone, balance types.Mon
 	}
 
 	return account, nil
+}
+
+func (s *testService) Repeat(paymentID string) (*types.Payment, error) {
+
+	payment, err := s.FindPaymentByID(paymentID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	account, err := s.FindAccountByID(payment.AccountID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if account.Balance < payment.Amount {
+		return nil, ErrNotEnoughBalance
+	}
+
+	newPayment, err := s.Pay(payment.AccountID, payment.Amount, payment.Category)
+	if err != nil {
+		return nil, err
+	}
+
+	return newPayment, nil
+}
+
+func (s *testService) addAcoount(data testAccount) (*types.Account, []*types.Payment, error) {
+	account, err := s.RegisterAccount(data.phone)
+	if err != nil {
+		return nil, nil, fmt.Errorf("cant register addAcount()")
+	}
+	err = s.Deposit(account.ID, data.balance)
+	if err != nil {
+		return nil, nil, fmt.Errorf("cant deposit addAcount()")
+	}
+	payments := make([]*types.Payment, len(data.payments))
+	for i, payment := range data.payments {
+		payments[i], err = s.Pay(account.ID, payment.amount, payment.category)
+		if err != nil {
+			return nil, nil, fmt.Errorf("cant make payment addAcount()")
+		}
+	}
+	return account, payments, nil
 }
