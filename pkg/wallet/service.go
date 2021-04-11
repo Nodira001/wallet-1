@@ -198,4 +198,11 @@ func (s *Service) addAccount(data struct {
 	}
 	return account, payments, nil
 }
+func (s *Service) FavoritePayment(paymentID string, name string) (*types.Favorite, error) {
 
+	return nil, nil
+}
+
+func (s *Service) PayFromFavorite(favoriteID string) (*types.Payment, error) {
+	return nil, nil
+}
