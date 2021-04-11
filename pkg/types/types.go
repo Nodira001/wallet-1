@@ -32,3 +32,11 @@ type Messenger interface {
 	Send(message string) (ok bool)
 	Receive() (message string, ok bool)
 }
+
+type Favorite struct {
+	ID        string
+	AccountID int64
+	Name      string
+	Amount    Money
+	Category  PaymentCategory
+}

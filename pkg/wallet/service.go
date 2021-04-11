@@ -18,6 +18,7 @@ type Service struct {
 	nextAccountID int64
 	accounts      []*types.Account
 	payments      []*types.Payment
+	favorites     []*types.Favorite
 }
 
 func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
@@ -197,3 +198,4 @@ func (s *Service) addAccount(data struct {
 	}
 	return account, payments, nil
 }
+
