@@ -9,7 +9,7 @@ import (
 )
 
 func TestService_FindAccountByID(t *testing.T) {
-	svc := newTestService()
+	svc := &Service{}
 
 	svc.RegisterAccount("+992 004 40 38 83")
 	svc.RegisterAccount("+992 004 40 22 11")
@@ -30,7 +30,7 @@ func TestService_FindAccountByID(t *testing.T) {
 }
 
 func TestService_Reject(t *testing.T) {
-	svc := newTestService()
+	svc := &Service{}
 
 	_, err := svc.RegisterAccount("+992 004 40 38 83")
 
@@ -61,7 +61,7 @@ func TestService_Reject(t *testing.T) {
 }
 
 func TestService_FindPaymentByID_success(t *testing.T) {
-	s := newTestService()
+	s := &Service{}
 
 	account, err := s.addAccountWithBalance("+992 004 40 38 83", 10_000_00)
 
@@ -90,7 +90,7 @@ func TestService_FindPaymentByID_success(t *testing.T) {
 }
 
 func TestService_FindPaymentByID_fail(t *testing.T) {
-	s := newTestService()
+	s := &Service{}
 
 	account, err := s.addAccountWithBalance("+992 004 40 38 83", 10_000_00)
 
@@ -120,7 +120,8 @@ func TestService_FindPaymentByID_fail(t *testing.T) {
 }
 
 func TestService_Repeat_success(t *testing.T) {
-	s := newTestService()
+	s := &Service{}
+
 	_, payments, err := s.addAccount(defaultTestAccount)
 	if err != nil {
 		t.Error("Repeat() err 126")
@@ -134,7 +135,8 @@ func TestService_Repeat_success(t *testing.T) {
 	}
 }
 func TestService_Repeat_fail(t *testing.T) {
-	s := newTestService()
+	s := &Service{}
+
 	_, payments, err := s.addAccount(defaultTestAccount)
 	if err != nil {
 		t.Error("Repeat() err 126")

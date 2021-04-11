@@ -20,14 +20,6 @@ type Service struct {
 	payments      []*types.Payment
 }
 
-type testService struct {
-	*Service
-}
-
-func newTestService() *testService {
-	return &testService{Service: &Service{}}
-}
-
 type testAccount struct {
 	phone    types.Phone
 	balance  types.Money
@@ -48,7 +40,7 @@ var defaultTestAccount = testAccount{
 	},
 }
 
-func (s *testService) RegisterAccount(phone types.Phone) (*types.Account, error) {
+func (s *Service) RegisterAccount(phone types.Phone) (*types.Account, error) {
 	for _, account := range s.accounts {
 		if account.Phone == phone {
 			return nil, ErrPhoneRegistered
@@ -64,7 +56,7 @@ func (s *testService) RegisterAccount(phone types.Phone) (*types.Account, error)
 	return account, nil
 }
 
-func (s *testService) Deposit(accountID int64, amount types.Money) error {
+func (s *Service) Deposit(accountID int64, amount types.Money) error {
 	if amount <= 0 {
 		return ErrAmountMustBePositive
 	}
@@ -85,7 +77,7 @@ func (s *testService) Deposit(accountID int64, amount types.Money) error {
 	return nil
 }
 
-func (s *testService) Pay(accountID int64, amount types.Money, category types.PaymentCategory) (*types.Payment, error) {
+func (s *Service) Pay(accountID int64, amount types.Money, category types.PaymentCategory) (*types.Payment, error) {
 
 	if amount <= 0 {
 		return nil, ErrAmountMustBePositive
@@ -122,7 +114,7 @@ func (s *testService) Pay(accountID int64, amount types.Money, category types.Pa
 	return payment, nil
 }
 
-func (s *testService) FindAccountByID(accountID int64) (*types.Account, error) {
+func (s *Service) FindAccountByID(accountID int64) (*types.Account, error) {
 	var account *types.Account
 	for _, acc := range s.accounts {
 		if acc.ID == accountID {
@@ -135,7 +127,7 @@ func (s *testService) FindAccountByID(accountID int64) (*types.Account, error) {
 	return account, nil
 }
 
-func (s *testService) FindPaymentByID(paymentID string) (*types.Payment, error) {
+func (s *Service) FindPaymentByID(paymentID string) (*types.Payment, error) {
 
 	var payment *types.Payment
 
@@ -151,7 +143,7 @@ func (s *testService) FindPaymentByID(paymentID string) (*types.Payment, error) 
 	}
 	return payment, nil
 }
-func (s *testService) Reject(paymentID string) error {
+func (s *Service) Reject(paymentID string) error {
 	payment, err := s.FindPaymentByID(paymentID)
 
 	if err != nil {
@@ -170,7 +162,7 @@ func (s *testService) Reject(paymentID string) error {
 	return nil
 }
 
-func (s *testService) addAccountWithBalance(phone types.Phone, balance types.Money) (*types.Account, error) {
+func (s *Service) addAccountWithBalance(phone types.Phone, balance types.Money) (*types.Account, error) {
 	account, err := s.RegisterAccount(phone)
 
 	if err != nil {
@@ -186,7 +178,7 @@ func (s *testService) addAccountWithBalance(phone types.Phone, balance types.Mon
 	return account, nil
 }
 
-func (s *testService) Repeat(paymentID string) (*types.Payment, error) {
+func (s *Service) Repeat(paymentID string) (*types.Payment, error) {
 
 	payment, err := s.FindPaymentByID(paymentID)
 
@@ -212,7 +204,7 @@ func (s *testService) Repeat(paymentID string) (*types.Payment, error) {
 	return newPayment, nil
 }
 
-func (s *testService) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
+func (s *Service) addAccount(data testAccount) (*types.Account, []*types.Payment, error) {
 	account, err := s.RegisterAccount(data.phone)
 	if err != nil {
 		return nil, nil, fmt.Errorf("cant register addAcount()")
