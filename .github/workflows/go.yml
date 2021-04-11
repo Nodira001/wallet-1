@@ -2,17 +2,15 @@ name: Go
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main, v1, feature/repear]
   pull_request:
-    branches: [ master, main ]
+    branches: [master, main, v1, feature/repear]
 
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
         with:
