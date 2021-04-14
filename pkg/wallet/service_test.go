@@ -1,256 +1,443 @@
 package wallet
 
 import (
-	"github.com/google/uuid"
 	"reflect"
 	"testing"
-
-	"github.com/iqbol007/wallet/pkg/types"
 )
 
-func TestService_FindAccountByID(t *testing.T) {
-	svc := &Service{}
-
-	svc.RegisterAccount("+992 004 40 38 83")
-	svc.RegisterAccount("+992 004 40 22 11")
-	svc.RegisterAccount("+992 004 40 11 22")
-
-	account, err := svc.FindAccountByID(2)
-
+func TestService_RegisterAccount_success(t *testing.T) {
+	s := &Service{}
+	_, err := s.RegisterAccount("+992004403883")
 	if err != nil {
-		t.Error(err)
-		return
-	}
-	expected := &types.Account{ID: 2, Phone: "+992 004 40 22 11", Balance: 0}
-	if !reflect.DeepEqual(expected, account) {
-		t.Error(ErrAccountNotFound)
+		t.Error("Error")
 		return
 	}
 
 }
-
-func TestService_Reject(t *testing.T) {
-	svc := &Service{}
-
-	_, err := svc.RegisterAccount("+992 004 40 38 83")
-
-	if err != nil {
-		t.Error(err)
+func TestService_RegisterAccount_fail(t *testing.T) {
+	s := &Service{}
+	s.RegisterAccount("+992004403883")
+	_, err := s.RegisterAccount("+992004403883")
+	if err == nil {
+		t.Error("Error")
 		return
-	}
-
-	err = svc.Deposit(1, 1_000)
-
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	payment, err := svc.Pay(1, 500, "mobile")
-
-	if err != nil {
-		t.Error(err)
-		return
-	}
-
-	err = svc.Reject(payment.ID)
-
-	if err != nil {
-		t.Error(err)
 	}
 }
+func TestService_FindAccountByID_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	fondedAccount, err := s.FindAccountByID(acc.ID)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	if !reflect.DeepEqual(acc, fondedAccount) {
+		t.Error("Error")
+		return
+	}
+}
+func TestService_FindAccountByID_fail(t *testing.T) {
+	s := &Service{}
+	_, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FindAccountByID(3)
+	if err == nil {
+		t.Error("Error")
+		return
+	}
 
+}
+func TestService_Deposit_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+}
+func TestService_Deposit_fail(t *testing.T) {
+	s := &Service{}
+	err := s.Deposit(12, -10_000_00)
+	if err == nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(12, 10_000_00)
+	if err == nil {
+		t.Error("Error")
+		return
+	}
+}
+func TestService_Pay_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+}
+func TestService_Pay_fail(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Pay(acc.ID, -1_000_00, "cars")
+	if err != ErrAmountMustBePositive {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Pay(12, 1_000_00, "cars")
+	if err != ErrAccountNotFound {
+		t.Error("Error")
+		return
+	}
+	acc.Balance -= 10_000_00
+	_, err = s.Pay(acc.ID, 1_000_00, "cars")
+	if err != ErrNotEnoughBalance {
+		t.Error("Error", err)
+		return
+	}
+}
 func TestService_FindPaymentByID_success(t *testing.T) {
 	s := &Service{}
-
-	account, err := s.addAccountWithBalance("+992 004 40 38 83", 10_000_00)
-
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Error(err)
+		t.Error("Error")
 		return
 	}
-
-	payment, err := s.Pay(account.ID, 1_000_00, "auto")
-
+	err = s.Deposit(acc.ID, 10_000_00)
 	if err != nil {
-		t.Error(err)
+		t.Error("Error")
 		return
 	}
-
-	got, err := s.FindPaymentByID(payment.ID)
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
 	if err != nil {
-		t.Error(err)
+		t.Error("Error")
 		return
 	}
-	if !reflect.DeepEqual(got, payment) {
-		t.Errorf("FindPaymentByID(): wrong returned = %v", err)
+	_, err = s.FindPaymentByID(payment.ID)
+	if err != nil {
+		t.Error("Error", err)
 		return
 	}
 
 }
-
 func TestService_FindPaymentByID_fail(t *testing.T) {
 	s := &Service{}
-
-	account, err := s.addAccountWithBalance("+992 004 40 38 83", 10_000_00)
-
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Error(err)
+		t.Error("Error")
 		return
 	}
-
-	_, err = s.Pay(account.ID, 1_000_00, "auto")
-
+	err = s.Deposit(acc.ID, 10_000_00)
 	if err != nil {
-		t.Error(err)
+		t.Error("Error")
 		return
 	}
-
-	_, err = s.FindPaymentByID(uuid.New().String())
-	if err == nil {
-
-		t.Error("FindPaymentByID(): must returned error, returned nil")
+	_, err = s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
 		return
 	}
+	_, err = s.FindPaymentByID("12")
 	if err != ErrPaymentNotFound {
-		t.Errorf("FindPaymentByID(): must return ErrorNotFound, returned = %v", err)
+		t.Error("Error")
+		return
+	}
+}
+func TestService_Reject_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Reject(payment.ID)
+	if err != nil {
+		t.Error("Error")
 		return
 	}
 
 }
-
+func TestService_Reject_fail(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Reject("id")
+	if err != ErrPaymentNotFound {
+		t.Error("Error")
+		return
+	}
+	payment.AccountID = 22
+	err = s.Reject(payment.ID)
+	if err != ErrAccountNotFound {
+		t.Error("Error")
+		return
+	}
+}
 func TestService_Repeat_success(t *testing.T) {
-	var svc Service
-
-	account, err := svc.RegisterAccount("+992000000001")
-
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Errorf("method RegisterAccount returned not nil error, account => %v", account)
+		t.Error("Error")
+		return
 	}
-
-	err = svc.Deposit(account.ID, 100_00)
+	err = s.Deposit(acc.ID, 10_000_00)
 	if err != nil {
-		t.Errorf("method Deposit returned not nil error, error => %v", err)
+		t.Error("Error")
+		return
 	}
-
-	payment, err := svc.Pay(account.ID, 10_00, "Cafe")
-
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
 	if err != nil {
-		t.Errorf("method Pay returned not nil error, account => %v", account)
+		t.Error("Error")
+		return
 	}
-
-	pay, err := svc.FindPaymentByID(payment.ID)
-
+	_, err = s.Repeat(payment.ID)
 	if err != nil {
-		t.Errorf("method FindPaymentByID returned not nil error, payment => %v", payment)
+		t.Error("Error")
+		return
 	}
-
-	paymentNew, err := svc.Repeat(pay.ID)
-
-	if err != nil {
-		t.Errorf("method Repat returned not nil error, paymentNew => %v", paymentNew)
-	}
-
 }
 func TestService_Repeat_fail(t *testing.T) {
-	var s Service
-
-	_, payments, err := s.addAccount(struct {
-		phone    types.Phone
-		balance  types.Money
-		payments []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}
-	}{
-		phone:   "+992 00440 3883",
-		balance: 10_000_00,
-		payments: []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}{
-			{amount: 1_000_00, category: "auto"},
-		},
-	})
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Error("Repeat() err 126")
+		t.Error("Error")
 		return
 	}
-	payment := payments[0]
-	payment.Amount += 10000000
-	_, err = s.Repeat(payment.ID)
-	if err != ErrNotEnoughBalance {
-		t.Error("Repeat() err 132", err)
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Repeat("id")
+	if err != ErrPaymentNotFound {
+		t.Error("Error")
 		return
 	}
 }
-func TestService_Favorite_success(t *testing.T) {
-	var s Service
-	_, payments, err := s.addAccount(struct {
-		phone    types.Phone
-		balance  types.Money
-		payments []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}
-	}{
-		phone:   "+992 00440 3883",
-		balance: 10_000_00,
-		payments: []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}{
-			{amount: 1_000_00, category: "auto"},
-		},
-	})
+
+func TestService_FavoritePayment_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Error("207")
+		t.Error("Error")
 		return
 	}
-	_, err = s.FavoritePayment(payments[0].ID, "Jenya")
+	err = s.Deposit(acc.ID, 10_000_00)
 	if err != nil {
-		t.Error("awd")
+		t.Error("Error")
+		return
+	}
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FavoritePayment(payment.ID, "Jenya")
+	if err != nil {
+		t.Error("Error")
+		return
 	}
 
 }
-func TestService_Favorite_fail(t *testing.T) {
+func TestService_FavoritePayment_fail(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FavoritePayment("id", "Jenya")
+	if err == nil {
+		t.Error("Error")
+		return
+	}
+}
+func TestSerivice_FindFavoritePaymentByID_success(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	favorite, err := s.FavoritePayment(payment.ID, "Jenya")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	foundedFavorite, err := s.FindFavoriteByID(favorite.ID)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	if !reflect.DeepEqual(favorite, foundedFavorite) {
+		t.Error("Error")
+		return
+	}
+}
+func TestSerivice_FindFavoritePaymentByID_fail(t *testing.T) {
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FavoritePayment(payment.ID, "Jenya")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FindFavoriteByID("id")
+	if err != ErrFavoriteNotFound {
+		t.Error("Error")
+		return
+	}
 
 }
+
 func TestService_PayFromFavorite_success(t *testing.T) {
-	var s Service
-	acc, _, err := s.addAccount(struct {
-		phone    types.Phone
-		balance  types.Money
-		payments []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}
-	}{
-		phone:   "+992 00440 3883",
-		balance: 10_000_00,
-		payments: []struct {
-			amount   types.Money
-			category types.PaymentCategory
-		}{
-			{amount: 1_000_00, category: "auto"},
-		},
-	})
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
 	if err != nil {
-		t.Error("207")
+		t.Error("Error")
 		return
 	}
-	p, _ := s.Pay(acc.ID, 1000, "cars")
-	fav, err := s.FavoritePayment(p.ID, "Jenya")
+	err = s.Deposit(acc.ID, 10_000_00)
 	if err != nil {
-		t.Error("244")
+		t.Error("Error")
+		return
 	}
-
-	_, err = s.PayFromFavorite(fav.ID)
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
 	if err != nil {
-		t.Error("249", err)
+		t.Error("Error")
+		return
 	}
-
+	favorite, err := s.FavoritePayment(payment.ID, "Jenya")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.PayFromFavorite(favorite.ID)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
 }
 func TestService_PayFromFavorite_fail(t *testing.T) {
-
+	s := &Service{}
+	acc, err := s.RegisterAccount("+992004403881")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	err = s.Deposit(acc.ID, 10_000_00)
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	payment, err := s.Pay(acc.ID, 1_000_00, "cars")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.FavoritePayment(payment.ID, "Jenya")
+	if err != nil {
+		t.Error("Error")
+		return
+	}
+	_, err = s.PayFromFavorite("id")
+	if err != ErrFavoriteNotFound {
+		t.Error("Error")
+		return
+	}
 }
