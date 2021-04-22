@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="cca2f915-bfb7-4270-aa66-ac7589320ef0" name="Default Changelist" comment="" />
+    <list default="true" id="cca2f915-bfb7-4270-aa66-ac7589320ef0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/files/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/files/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/favorites.dump" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/payments.dump" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/wallet/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/wallet/service.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="GOROOT" path="C:\Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
@@ -22,10 +40,15 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Go Test.TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\admin\Documents\Golang Alif\2021\lec-17\wallet\data" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/iqbol007/wallet/cmd/files">
     <configuration name="go build github.com/iqbol007/wallet/cmd/files" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="files" />
       <working_directory value="$PROJECT_DIR$" />
@@ -33,6 +56,17 @@
       <filePath value="$PROJECT_DIR$/cmd/files/main.go" />
       <package value="github.com/iqbol007/wallet/cmd/files" />
       <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iqbol007/wallet/pkg/wallet" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestService_FullExport\E$" />
       <method v="2" />
     </configuration>
     <configuration name="TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -46,6 +80,17 @@
       <pattern value="^\QTestService_FullExport\E$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet (1)" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iqbol007/wallet/pkg/wallet" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestService_FullImport\E$" />
+      <method v="2" />
+    </configuration>
     <configuration name="TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="files" />
       <working_directory value="$PROJECT_DIR$/pkg/wallet" />
@@ -57,29 +102,30 @@
       <pattern value="^\QTestService_FullImport\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestService_PayFromFavorite_fail in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="files" />
-      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/iqbol007/wallet/pkg/wallet" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestService_PayFromFavorite_fail\E$" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build github.com/iqbol007/wallet/cmd/files" />
+        <item itemvalue="Go Test.TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet (1)" />
+        <item itemvalue="Go Test.TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet (1)" />
         <item itemvalue="Go Test.TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet" />
         <item itemvalue="Go Test.TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet" />
-        <item itemvalue="Go Build.go build github.com/iqbol007/wallet/cmd/files" />
-        <item itemvalue="Go Test.TestService_PayFromFavorite_fail in github.com/iqbol007/wallet/pkg/wallet" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -94,30 +140,30 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="549" y="172" key="FileChooserDialogImpl/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1618631690156" />
-    <state width="1493" height="280" key="GridCell.Tab.0.bottom" timestamp="1619001510092">
+    <state width="1493" height="173" key="GridCell.Tab.0.bottom" timestamp="1619079938266">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="280" key="GridCell.Tab.0.bottom/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510092" />
     <state width="1877" height="154" key="GridCell.Tab.0.bottom/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780185" />
-    <state width="1493" height="14" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
-    <state width="1493" height="280" key="GridCell.Tab.0.center" timestamp="1619001510091">
+    <state width="1493" height="173" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1619079938266" />
+    <state width="1493" height="173" key="GridCell.Tab.0.center" timestamp="1619079938265">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="280" key="GridCell.Tab.0.center/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510091" />
     <state width="1877" height="154" key="GridCell.Tab.0.center/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
-    <state width="1493" height="14" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
-    <state width="1493" height="280" key="GridCell.Tab.0.left" timestamp="1619001510091">
+    <state width="1493" height="173" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1619079938265" />
+    <state width="1493" height="173" key="GridCell.Tab.0.left" timestamp="1619079938265">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="280" key="GridCell.Tab.0.left/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510091" />
     <state width="1877" height="154" key="GridCell.Tab.0.left/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
-    <state width="1493" height="14" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
-    <state width="1493" height="280" key="GridCell.Tab.0.right" timestamp="1619001510092">
+    <state width="1493" height="173" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1619079938265" />
+    <state width="1493" height="173" key="GridCell.Tab.0.right" timestamp="1619079938265">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state width="1493" height="280" key="GridCell.Tab.0.right/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510092" />
     <state width="1877" height="154" key="GridCell.Tab.0.right/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
-    <state width="1493" height="14" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
+    <state width="1493" height="173" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1619079938265" />
     <state x="555" y="125" key="SettingsEditor" timestamp="1618981282097">
       <screen x="0" y="0" width="1536" height="834" />
     </state>

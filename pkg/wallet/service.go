@@ -3,6 +3,7 @@ package wallet
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/iqbol007/wallet/pkg/types"
 	"io"
@@ -220,8 +221,7 @@ func (s *Service) ImportFromFile(path string) error {
 		}
 		content = append(content, buf[:read]...)
 	}
-	data := strings.Split(string(content), ";")
-	log.Print(data)
+	strings.Split(string(content), ";")
 	return nil
 }
 func (s *Service) Export(dir string) error {
@@ -307,6 +307,7 @@ func (s *Service) Export(dir string) error {
 
 func (s *Service) Import(dir string) (importError error) {
 	accountsFile, err := os.Open(dir + "/accounts.dump")
+	fmt.Println(accountsFile)
 	if err == nil {
 		defer accountsFile.Close()
 		accountsReader := bufio.NewReader(accountsFile)
@@ -334,6 +335,8 @@ func (s *Service) Import(dir string) (importError error) {
 				Balance: types.Money(accountBalance),
 			}
 			existent, err := s.FindAccountByID(accountID)
+			log.Print(existent)
+			log.Println(accountBackUp)
 			if err == ErrAccountNotFound {
 				s.accounts = append(s.accounts, accountBackUp)
 			}
@@ -431,5 +434,6 @@ func (s *Service) Import(dir string) (importError error) {
 	} else {
 		return err
 	}
+	fmt.Println(s.accounts)
 	return nil
 }
