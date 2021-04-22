@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cca2f915-bfb7-4270-aa66-ac7589320ef0" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="C:\Go" />
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1rEcvkIaCpq9B93LZT5jmuigxpx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunManager" selected="Go Test.TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet">
+    <configuration name="go build github.com/iqbol007/wallet/cmd/files" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/cmd/files/main.go" />
+      <package value="github.com/iqbol007/wallet/cmd/files" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iqbol007/wallet/pkg/wallet" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestService_FullExport\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iqbol007/wallet/pkg/wallet" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestService_FullImport\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestService_PayFromFavorite_fail in github.com/iqbol007/wallet/pkg/wallet" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="files" />
+      <working_directory value="$PROJECT_DIR$/pkg/wallet" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/iqbol007/wallet/pkg/wallet" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestService_PayFromFavorite_fail\E$" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestService_FullImport in github.com/iqbol007/wallet/pkg/wallet" />
+        <item itemvalue="Go Test.TestService_FullExport in github.com/iqbol007/wallet/pkg/wallet" />
+        <item itemvalue="Go Build.go build github.com/iqbol007/wallet/cmd/files" />
+        <item itemvalue="Go Test.TestService_PayFromFavorite_fail in github.com/iqbol007/wallet/pkg/wallet" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="442" y="117" key="#Plugins" timestamp="1618981333138">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="442" y="117" key="#Plugins/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1618981333138" />
+    <state x="2472" y="166" key="#Plugins/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618545485636" />
+    <state x="549" y="172" key="FileChooserDialogImpl" timestamp="1618631690156">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="549" y="172" key="FileChooserDialogImpl/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1618631690156" />
+    <state width="1493" height="280" key="GridCell.Tab.0.bottom" timestamp="1619001510092">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="280" key="GridCell.Tab.0.bottom/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510092" />
+    <state width="1877" height="154" key="GridCell.Tab.0.bottom/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780185" />
+    <state width="1493" height="14" key="GridCell.Tab.0.bottom/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
+    <state width="1493" height="280" key="GridCell.Tab.0.center" timestamp="1619001510091">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="280" key="GridCell.Tab.0.center/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510091" />
+    <state width="1877" height="154" key="GridCell.Tab.0.center/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
+    <state width="1493" height="14" key="GridCell.Tab.0.center/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
+    <state width="1493" height="280" key="GridCell.Tab.0.left" timestamp="1619001510091">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="280" key="GridCell.Tab.0.left/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510091" />
+    <state width="1877" height="154" key="GridCell.Tab.0.left/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
+    <state width="1493" height="14" key="GridCell.Tab.0.left/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
+    <state width="1493" height="280" key="GridCell.Tab.0.right" timestamp="1619001510092">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state width="1493" height="280" key="GridCell.Tab.0.right/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1619001510092" />
+    <state width="1877" height="154" key="GridCell.Tab.0.right/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618546780184" />
+    <state width="1493" height="14" key="GridCell.Tab.0.right/0.0.1536.834@0.0.1536.834" timestamp="1618657114145" />
+    <state x="555" y="125" key="SettingsEditor" timestamp="1618981282097">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="555" y="125" key="SettingsEditor/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1618981282097" />
+    <state x="2660" y="250" key="SettingsEditor/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618548645899" />
+    <state x="498" y="180" width="672" height="539" key="search.everywhere.popup" timestamp="1619077033340">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="498" y="180" width="672" height="539" key="search.everywhere.popup/0.0.1536.834/1920.0.1920.1050@0.0.1536.834" timestamp="1618981291252" />
+    <state x="2543" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1536.834/1920.0.1920.1050@1920.0.1920.1050" timestamp="1618548737609" />
+    <state x="498" y="180" width="672" height="539" key="search.everywhere.popup/0.0.1536.834@0.0.1536.834" timestamp="1619077033340" />
+  </component>
+</project>
