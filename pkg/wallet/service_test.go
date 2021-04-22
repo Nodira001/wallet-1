@@ -470,7 +470,7 @@ func TestService_FullExport(t *testing.T) {
 		return
 	}
 
-	err = s.Export("data/")
+	err = s.Export("data")
 	if err != nil {
 		fmt.Print(err)
 		return
@@ -479,7 +479,7 @@ func TestService_FullExport(t *testing.T) {
 func TestService_FullImport(t *testing.T) {
 	s := &Service{}
 
-	err := s.Import("data/")
+	err := s.Import("data")
 	if err != nil {
 		t.Error(err)
 		return

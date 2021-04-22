@@ -227,7 +227,7 @@ func (s *Service) ImportFromFile(path string) error {
 func (s *Service) Export(dir string) error {
 	if len(s.accounts) > 0 {
 
-		accountsFile, err := os.Create(dir + "accounts.dump")
+		accountsFile, err := os.Create(dir + "/accounts.dump")
 
 		if err != nil {
 			log.Println(err)
@@ -252,7 +252,7 @@ func (s *Service) Export(dir string) error {
 		}
 	}
 	if len(s.payments) > 0 {
-		paymentsFile, err := os.Create(dir + "payments.dump")
+		paymentsFile, err := os.Create(dir + "/payments.dump")
 		if err != nil {
 			log.Println(err)
 			return err
@@ -277,7 +277,7 @@ func (s *Service) Export(dir string) error {
 	}
 
 	if len(s.favorites) > 0 {
-		favoritesFile, err := os.Create(dir + "favorites.dump")
+		favoritesFile, err := os.Create(dir + "/favorites.dump")
 
 		if err != nil {
 			log.Println(err)
@@ -306,7 +306,7 @@ func (s *Service) Export(dir string) error {
 }
 
 func (s *Service) Import(dir string) (importError error) {
-	accountsFile, err := os.Open(dir + "accounts.dump")
+	accountsFile, err := os.Open(dir + "/accounts.dump")
 	if err == nil {
 		defer accountsFile.Close()
 		accountsReader := bufio.NewReader(accountsFile)
@@ -344,7 +344,7 @@ func (s *Service) Import(dir string) (importError error) {
 	} else {
 		return err
 	}
-	paymentsFile, err := os.Open(dir + "payments.dump")
+	paymentsFile, err := os.Open(dir + "/payments.dump")
 	if err == nil {
 		defer paymentsFile.Close()
 		paymentsReader := bufio.NewReader(paymentsFile)
@@ -388,7 +388,7 @@ func (s *Service) Import(dir string) (importError error) {
 	} else {
 		return err
 	}
-	favoritesFile, err := os.Open(dir + "favorites.dump")
+	favoritesFile, err := os.Open(dir + "/favorites.dump")
 	if err == nil {
 		defer favoritesFile.Close()
 		favoritesReader := bufio.NewReader(favoritesFile)
