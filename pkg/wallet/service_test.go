@@ -2,7 +2,7 @@ package wallet
 
 import (
 	"fmt"
-	"log"
+
 	"reflect"
 	"testing"
 )
@@ -484,5 +484,4 @@ func TestService_FullImport(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	log.Print(s.accounts)
 }

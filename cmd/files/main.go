@@ -1,43 +1,30 @@
 package main
 
 import (
-	"github.com/iqbol007/wallet/pkg/wallet"
 	"log"
+	"sync"
+	"time"
 )
 
 func main() {
-	s := &wallet.Service{}
-	err := s.Import("data")
-	log.Print(err)
-	////s := &Service{}
-	//
-	//acc, err := s.RegisterAccount("+992004403883")
-	//if err != nil {
-	//	fmt.Print(err)
-	//	return
-	//}
-	//
-	//err = s.Deposit(acc.ID, 10_000_00)
-	//if err != nil {
-	//	fmt.Print(err)
-	//	return
-	//}
-	//
-	//payment, err := s.Pay(acc.ID, 10_000, "auto")
-	//if err != nil {
-	//	fmt.Print(err)
-	//	return
-	//}
-	//
-	//_, err = s.FavoritePayment(payment.ID, "Auto")
-	//if err != nil {
-	//	fmt.Print(err)
-	//	return
-	//}
-	//
-	//err = s.Export("data")
-	//if err != nil {
-	//	fmt.Print(err)
-	//	return
-	//}
+	log.Print("main started")
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+	sum := 0
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 1_000; i++ {
+			sum++
+		}
+	}()
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 1_000; i++ {
+			sum++
+		}
+	}()
+	wg.Wait()
+	log.Print("main finished")
+	time.Sleep(time.Second * 5)
+	log.Print(sum)
 }
