@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/google/uuid"
 	"github.com/iqbol007/wallet/pkg/types"
@@ -320,18 +321,18 @@ func (s *Service) Export(dir string) error {
 			}
 		}
 	}
-	fmt.Println("nextAccountID", s.nextAccountID, "accounts->>", len(s.accounts), "payments->>", len(s.payments), "favorites->>", len(s.favorites))
-	fmt.Println("start")
-	for _, v := range s.accounts {
-		fmt.Println(v)
-	}
-	for _, v := range s.payments {
-		fmt.Println(v)
-	}
-	for _, v := range s.favorites {
-		fmt.Println(v)
-	}
-	fmt.Println("stop")
+	// fmt.Println("nextAccountID", s.nextAccountID, "accounts->>", len(s.accounts), "payments->>", len(s.payments), "favorites->>", len(s.favorites))
+	// fmt.Println("start")
+	// for _, v := range s.accounts {
+	// 	fmt.Println(v)
+	// }
+	// for _, v := range s.payments {
+	// 	fmt.Println(v)
+	// }
+	// for _, v := range s.favorites {
+	// 	fmt.Println(v)
+	// }
+	// fmt.Println("stop")
 	return nil
 }
 
@@ -468,18 +469,18 @@ func (s *Service) Import(dir string) (importError error) {
 
 		}
 	}
-	fmt.Println("nextAccountID", s.nextAccountID, "accounts->>", len(s.accounts), "payments->>", len(s.payments), "favorites->>", len(s.favorites))
-	fmt.Println("start")
-	for _, v := range s.accounts {
-		fmt.Println(v)
-	}
-	for _, v := range s.payments {
-		fmt.Println(v)
-	}
-	for _, v := range s.favorites {
-		fmt.Println(v)
-	}
-	fmt.Println("stop")
+	// fmt.Println("nextAccountID", s.nextAccountID, "accounts->>", len(s.accounts), "payments->>", len(s.payments), "favorites->>", len(s.favorites))
+	// fmt.Println("start")
+	// for _, v := range s.accounts {
+	// 	fmt.Println(v)
+	// }
+	// for _, v := range s.payments {
+	// 	fmt.Println(v)
+	// }
+	// for _, v := range s.favorites {
+	// 	fmt.Println(v)
+	// }
+	// fmt.Println("stop")
 	return nil
 }
 
@@ -537,27 +538,80 @@ func (s *Service) HistoryToFiles(payments []types.Payment, dir string, records i
 
 	return nil
 }
+
+// func Concurrently() int64 {
+// 	wg := sync.WaitGroup{}
+// 	wg.Add(2)
+
+// 	mu := sync.Mutex{}
+// 	sum := int64(0)
+
+// 	go func() {
+// 		defer wg.Done()
+// 		val := int64(0)
+// 		for i := 0; i < 1_000; i++ {
+// 			val++
+// 		}
+// 		mu.Lock()
+// 		defer mu.Unlock()
+// 		sum += val
+// 	}()
+// 	go func() {
+// 		defer wg.Done()
+// 		val := int64(0)
+// 		for i := 0; i < 1_000; i++ {
+// 			val++
+// 		}
+// 		mu.Lock()
+// 		defer mu.Unlock()
+// 		sum += val
+// 	}()
+// 	wg.Wait()
+// 	return sum
+// }
+
 func (s *Service) SumPayments(goroutines int) types.Money {
+
+	mu := sync.Mutex{}
 	sum := types.Money(0)
+
 	if goroutines == 0 || goroutines == 1 {
+		wg := sync.WaitGroup{}
+		wg.Add(1)
 		go func() {
+			defer wg.Done()
+			val := types.Money(0)
 			for _, payment := range s.payments {
-				sum += payment.Amount
+				val += payment.Amount
 			}
+			mu.Lock()
+			defer mu.Unlock()
+			sum += val
 		}()
+		wg.Wait()
 		return sum
 	}
+	wg := sync.WaitGroup{}
+	wg.Add(goroutines)
 	for i := 0; i < goroutines; i++ {
+
 		go func() {
+			defer wg.Done()
+			val := types.Money(0)
 			for _, payment := range s.payments {
-				sum += payment.Amount
+				val += payment.Amount
 			}
+			mu.Lock()
+			defer mu.Unlock()
+			sum += val
 		}()
 	}
-	return sum
+
+	wg.Wait()
+	return sum / 10 // types.Money(len(s.payments))
 }
 
 // func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payment, error) {
-	
+
 // 	return nil, nil
 // }

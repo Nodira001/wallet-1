@@ -11,28 +11,30 @@ func Regular() int64 {
 }
 func Concurrently() int64 {
 	wg := sync.WaitGroup{}
-	mu := sync.Mutex{}
 	wg.Add(2)
+	
+	mu := sync.Mutex{}
 	sum := int64(0)
+
 	go func() {
 		defer wg.Done()
-		val:=int64(0)
+		val := int64(0)
 		for i := 0; i < 1_000; i++ {
 			val++
 		}
 		mu.Lock()
 		defer mu.Unlock()
-		sum+=val
+		sum += val
 	}()
 	go func() {
 		defer wg.Done()
-		val:=int64(0)
+		val := int64(0)
 		for i := 0; i < 1_000; i++ {
 			val++
 		}
 		mu.Lock()
 		defer mu.Unlock()
-		val+=sum
+		sum += val
 	}()
 	wg.Wait()
 	return sum
