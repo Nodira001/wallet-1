@@ -5,6 +5,8 @@ import (
 
 	"reflect"
 	"testing"
+
+	"github.com/iqbol007/wallet/pkg/types"
 )
 
 func TestService_RegisterAccount_success(t *testing.T) {
@@ -476,10 +478,80 @@ func TestService_FullExport(t *testing.T) {
 		return
 	}
 }
-func TestService_FullImport(t *testing.T) {
+func TestService_FullImport_success(t *testing.T) {
 	s := &Service{}
 
 	err := s.Import("data")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+func TestService_FullImport_fail(t *testing.T) {
+	s := &Service{}
+	err := s.Import("datat")
+	if err == nil {
+		t.Error("must return error")
+		return
+	}
+}
+func TestService_ExportAccountHistory_fail(t *testing.T) {
+	s := &Service{}
+	_, err := s.ExportAccountHistory(1)
+	if err == nil {
+		t.Error("must return error")
+		return
+	}
+}
+
+func TestService_ExportAccountHistory_success(t *testing.T) {
+	s := &Service{}
+	s.RegisterAccount("1")
+	_, err := s.ExportAccountHistory(1)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestService_ExportAccountHistoryToFile_success(t *testing.T) {
+	s := &Service{}
+	s.RegisterAccount("1")
+	err := s.ExportToFile("data")
+	if err == nil {
+		t.Error(err)
+		return
+	}
+	err = s.ExportToFile("data/acc.txt")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
+
+func TestService_ImportFile(t *testing.T) {
+
+}
+func TestService_HistoryToFies(t *testing.T) {
+	s := &Service{}
+	s.RegisterAccount("1")
+	err := s.HistoryToFiles([]types.Payment{}, "data", 1)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	s.Deposit(1, 10_000_00)
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	p := []types.Payment{
+		{ID: "1", AccountID: 1, Amount: 10_000_00, Category: "auto", Status: "S"},
+		{ID: "1", AccountID: 1, Amount: 10_000_00, Category: "auto", Status: "S"}}
+	err = s.HistoryToFiles(p, "data", 1)
 	if err != nil {
 		t.Error(err)
 		return

@@ -1,30 +1,30 @@
 package main
 
-// import (
-// 	"fmt"
-// 	"github.com/iqbol007/wallet/pkg/wallet"
-// )
+import "fmt"
 
 func main() {
+	a := aaa(4)
 
-	// s := &wallet.Service{}
-	// s.RegisterAccount("+1")
-	// s.Deposit(1, 10_000_000_000)
-	// s.Pay(1, 20, "auto")
-	// s.Pay(2, 20, "auto")
-	// s.Pay(3, 20, "auto")
-	// s.Pay(1, 20, "auto")
-	// s.Pay(2, 20, "auto")
-	// s.Pay(3, 20, "auto")
-	// s.Pay(1, 20, "auto")
-	// s.Pay(8, 20, "auto")
-	// s.Pay(6, 20, "auto")
-	// s.Pay(1, 20, "auto")
-	// s.Pay(5, 20, "auto")
-	// res, err := s.FilterPayments(1, 3)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(res)
+	fmt.Println(a)
+}
+func aaa(count int) [][]int {
 
+	payments := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+	grouped := [][]int{}
+
+	for i := 0; i < len(payments); i++ {
+
+		if i+count > len(payments)-1 {
+
+			grouped = append(grouped, payments[i:])
+
+			break
+		}
+
+		grouped = append(grouped, payments[i:i+count])
+
+		i += count - 1
+	}
+
+	return grouped
 }
