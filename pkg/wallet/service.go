@@ -459,9 +459,7 @@ func (s *Service) Import(dir string) (importError error) {
 
 		}
 	}
-	if err != nil {
-		return err
-	}
+
 	return nil
 }
 
