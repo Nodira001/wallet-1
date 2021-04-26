@@ -563,29 +563,29 @@ func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int
 	if err != nil {
 		return nil, err
 	}
-	payments := []types.Payment{}
+	pm := []types.Payment{}
 
 	for _, p := range s.payments {
 
 		if p.AccountID == accountID {
 
-			payments = append(payments, *p)
+			pm = append(pm, *p)
 
 		}
 	}
 
 	grouped := [][]types.Payment{}
 
-	for i := 0; i < len(payments); i++ {
+	for i := 0; i < len(pm); i++ {
 
-		if i+goroutinesCount > len(payments)-1 {
+		if i+goroutinesCount > len(pm)-1 {
 
-			grouped = append(grouped, payments[i:])
+			grouped = append(grouped, pm[i:])
 
 			break
 		}
 
-		grouped = append(grouped, payments[i:i+goroutinesCount])
+		grouped = append(grouped, pm[i:i+goroutinesCount])
 
 		i += goroutinesCount - 1
 	}
@@ -653,4 +653,89 @@ func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payme
 
 	return payments, nil
 
+}
+
+func (s *Service) FilterPaymentsByFn(filter func(payment types.Payment) bool, goroutines int) ([]types.Payment, error) {
+
+	if goroutines == 0 {
+		mu := sync.Mutex{}
+		payments := []types.Payment{}
+
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+			val := []types.Payment{}
+			for _, payment := range s.payments {
+				if filter(*payment) {
+					val = append(payments, *payment)
+				}
+			}
+			mu.Lock()
+			defer mu.Unlock()
+			payments = append(payments, val...)
+
+		}()
+
+		wg.Wait()
+		if len(payments) == 0 {
+
+			return nil, ErrAccountNotFound
+		}
+
+		return payments, nil
+	}
+	goroutinesCount := goroutines
+	wg := sync.WaitGroup{}
+
+	mu := sync.Mutex{}
+	payments := []types.Payment{}
+
+	pm := []types.Payment{}
+
+	for _, p := range s.payments {
+
+		if filter(*p) {
+
+			pm = append(pm, *p)
+
+		}
+	}
+
+	grouped := [][]types.Payment{}
+
+	for i := 0; i < len(pm); i++ {
+
+		if i+goroutinesCount > len(pm)-1 {
+
+			grouped = append(grouped, pm[i:])
+
+			break
+		}
+
+		grouped = append(grouped, pm[i:i+goroutinesCount])
+
+		i += goroutinesCount - 1
+	}
+
+	if len(grouped) == 0 {
+		return nil, nil
+	}
+	for _, fp := range grouped {
+		wg.Add(1)
+		go func(fp []types.Payment) {
+			defer wg.Done()
+			mu.Lock()
+			payments = append(payments, fp...)
+			defer mu.Unlock()
+		}(fp)
+	}
+
+	wg.Wait()
+	if len(payments) == 0 {
+		return nil, nil
+	}
+
+	return payments, nil
 }

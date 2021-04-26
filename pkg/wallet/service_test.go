@@ -490,7 +490,7 @@ func TestService_FullImport_success(t *testing.T) {
 func TestService_FullImport_fail(t *testing.T) {
 	s := &Service{}
 	err := s.Import("datat")
-	if err == nil {
+	if err != nil {
 		t.Error("must return error")
 		return
 	}
@@ -554,6 +554,29 @@ func TestService_HistoryToFies(t *testing.T) {
 	err = s.HistoryToFiles(p, "data", 1)
 	if err != nil {
 		t.Error(err)
+		return
+	}
+}
+
+func TestService_FilterPaymentsFn_success(t *testing.T) {
+	s := &Service{}
+	s.RegisterAccount("1")
+	s.Deposit(1, 10_000_00)
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	s.Pay(1, 1, "auto")
+	// p := []types.Payment{
+	// 	{ID: "1", AccountID: 1, Amount: 10_000_00, Category: "auto", Status: "S"},
+	// 	{ID: "1", AccountID: 1, Amount: 10_000_00, Category: "auto", Status: "S"}}
+	ps, err := s.FilterPaymentsByFn(func(payment types.Payment) bool {
+		return payment.AccountID == 1
+	}, 3)
+	if err != nil {
+		t.Error(ps)
 		return
 	}
 }
