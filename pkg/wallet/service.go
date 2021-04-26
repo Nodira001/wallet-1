@@ -3,16 +3,14 @@ package wallet
 import (
 	"bufio"
 	"errors"
-	"fmt"
+	"github.com/google/uuid"
+	"github.com/iqbol007/wallet/pkg/types"
 	"io"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
-
-	"github.com/google/uuid"
-	"github.com/iqbol007/wallet/pkg/types"
 )
 
 var ErrPhoneRegistered = errors.New("phone already registered")
@@ -175,74 +173,74 @@ func (s *Service) PayFromFavorite(favoriteID string) (*types.Payment, error) {
 
 	return s.Pay(favorite.AccountID, favorite.Amount, favorite.Category)
 }
-func (s *Service) ExportToFile(path string) error {
-	if len(s.accounts) > 0 {
-		file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
+// func (s *Service) ExportToFile(path string) error {
+// 	if len(s.accounts) > 0 {
+// 		file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		defer file.Close()
 
-		var str string
-		for _, v := range s.accounts {
-			str += fmt.Sprint(v.ID) + ";" + string(v.Phone) + ";" + fmt.Sprint(v.Balance) + "|"
-		}
-		_, err = file.WriteString(str)
+// 		var str string
+// 		for _, v := range s.accounts {
+// 			str += fmt.Sprint(v.ID) + ";" + string(v.Phone) + ";" + fmt.Sprint(v.Balance) + "|"
+// 		}
+// 		_, err = file.WriteString(str)
 
-		if err != nil {
-			return err
-		}
+// 		if err != nil {
+// 			return err
+// 		}
 
-		return nil
-	}
-	return nil
-}
-func (s *Service) ImportFromFile(path string) error {
-	file, err := os.Open(path)
-	if err != nil {
+// 		return nil
+// 	}
+// 	return nil
+// }
+// func (s *Service) ImportFromFile(path string) error {
+// 	file, err := os.Open(path)
+// 	if err != nil {
 
-		return err
-	}
-	defer file.Close()
-	buf := make([]byte, 1)
-	content := make([]byte, 0)
-	for {
-		read, err := file.Read(buf)
+// 		return err
+// 	}
+// 	defer file.Close()
+// 	buf := make([]byte, 1)
+// 	content := make([]byte, 0)
+// 	for {
+// 		read, err := file.Read(buf)
 
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-		content = append(content, buf[:read]...)
-	}
-	data := strings.Split(string(content), "|")
-	var row []string
-	for _, v := range data {
-		row = append(row, strings.ReplaceAll(v, ";", " "))
-	}
-	for _, acc := range row {
-		if len(acc) == 0 {
-			continue
-		}
+// 		if err == io.EOF {
+// 			break
+// 		}
+// 		if err != nil {
+// 			return err
+// 		}
+// 		content = append(content, buf[:read]...)
+// 	}
+// 	data := strings.Split(string(content), "|")
+// 	var row []string
+// 	for _, v := range data {
+// 		row = append(row, strings.ReplaceAll(v, ";", " "))
+// 	}
+// 	for _, acc := range row {
+// 		if len(acc) == 0 {
+// 			continue
+// 		}
 
-		accountSplit := strings.Split(acc, " ")
-		id, err := strconv.ParseInt(accountSplit[0], 10, 64)
-		if err != nil {
-			return err
-		}
-		balance, err := strconv.ParseInt(accountSplit[2], 10, 64)
+// 		accountSplit := strings.Split(acc, " ")
+// 		id, err := strconv.ParseInt(accountSplit[0], 10, 64)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		balance, err := strconv.ParseInt(accountSplit[2], 10, 64)
 
-		if err != nil {
-			return err
-		}
-		account := &types.Account{ID: id, Balance: types.Money(balance), Phone: types.Phone(accountSplit[1])}
-		s.accounts = append(s.accounts, account)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		account := &types.Account{ID: id, Balance: types.Money(balance), Phone: types.Phone(accountSplit[1])}
+// 		s.accounts = append(s.accounts, account)
 
-	}
-	return nil
-}
+// 	}
+// 	return nil
+// }
 
 func (s *Service) Export(dir string) error {
 	if len(s.accounts) > 0 {
@@ -462,59 +460,59 @@ func (s *Service) Import(dir string) (importError error) {
 	return nil
 }
 
-func (s *Service) ExportAccountHistory(accountID int64) ([]types.Payment, error) {
-	var payments []types.Payment
-	acc, err := s.FindAccountByID(accountID)
-	if err != nil {
-		return nil, ErrAccountNotFound
-	}
-	for _, payment := range s.payments {
-		if acc.ID == payment.AccountID {
-			payments = append(payments, *payment)
-		}
-	}
-	return payments, nil
-}
+// func (s *Service) ExportAccountHistory(accountID int64) ([]types.Payment, error) {
+// 	var payments []types.Payment
+// 	acc, err := s.FindAccountByID(accountID)
+// 	if err != nil {
+// 		return nil, ErrAccountNotFound
+// 	}
+// 	for _, payment := range s.payments {
+// 		if acc.ID == payment.AccountID {
+// 			payments = append(payments, *payment)
+// 		}
+// 	}
+// 	return payments, nil
+// }
 
-func (s *Service) HistoryToFiles(payments []types.Payment, dir string, records int) error {
-	if len(payments) > 0 {
-		if len(payments) <= records {
-			file, _ := os.OpenFile(dir+"/payments.dump", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
-			defer file.Close()
+// func (s *Service) HistoryToFiles(payments []types.Payment, dir string, records int) error {
+// 	if len(payments) > 0 {
+// 		if len(payments) <= records {
+// 			file, _ := os.OpenFile(dir+"/payments.dump", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+// 			defer file.Close()
 
-			var str string
-			for _, v := range payments {
-				str += fmt.Sprint(v.ID) + ";" + fmt.Sprint(v.AccountID) + ";" + fmt.Sprint(v.Amount) + ";" + fmt.Sprint(v.Category) + ";" + fmt.Sprint(v.Status) + "\n"
-			}
-			file.WriteString(str)
-		} else {
+// 			var str string
+// 			for _, v := range payments {
+// 				str += fmt.Sprint(v.ID) + ";" + fmt.Sprint(v.AccountID) + ";" + fmt.Sprint(v.Amount) + ";" + fmt.Sprint(v.Category) + ";" + fmt.Sprint(v.Status) + "\n"
+// 			}
+// 			file.WriteString(str)
+// 		} else {
 
-			var row string
-			k := 0
-			count := 1
-			var file *os.File
-			for _, v := range payments {
-				if k == 0 {
-					file, _ = os.OpenFile(dir+"/payments"+fmt.Sprint(count)+".dump", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
-				}
-				k++
-				row = fmt.Sprint(v.ID) + ";" + fmt.Sprint(v.AccountID) + ";" + fmt.Sprint(v.Amount) + ";" + fmt.Sprint(v.Category) + ";" + fmt.Sprint(v.Status) + "\n"
-				_, err := file.WriteString(row)
-				if err != nil {
-					return err
-				}
-				if k == records {
-					row = ""
-					count++
-					k = 0
-					file.Close()
-				}
-			}
+// 			var row string
+// 			k := 0
+// 			count := 1
+// 			var file *os.File
+// 			for _, v := range payments {
+// 				if k == 0 {
+// 					file, _ = os.OpenFile(dir+"/payments"+fmt.Sprint(count)+".dump", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+// 				}
+// 				k++
+// 				row = fmt.Sprint(v.ID) + ";" + fmt.Sprint(v.AccountID) + ";" + fmt.Sprint(v.Amount) + ";" + fmt.Sprint(v.Category) + ";" + fmt.Sprint(v.Status) + "\n"
+// 				_, err := file.WriteString(row)
+// 				if err != nil {
+// 					return err
+// 				}
+// 				if k == records {
+// 					row = ""
+// 					count++
+// 					k = 0
+// 					file.Close()
+// 				}
+// 			}
 
-		}
-	}
-	return nil
-}
+// 		}
+// 	}
+// 	return nil
+// }
 
 func (s *Service) SumPayments(goroutines int) types.Money {
 
@@ -557,7 +555,11 @@ func (s *Service) SumPayments(goroutines int) types.Money {
 	return sum / 10
 }
 
-func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int64) [][]types.Payment {
+func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int64) ([][]types.Payment, error) {
+	_, err := s.FindAccountByID(accountID)
+	if err != nil {
+		return nil, err
+	}
 	payments := []types.Payment{}
 
 	for _, p := range s.payments {
@@ -585,11 +587,10 @@ func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int
 		i += goroutinesCount - 1
 	}
 
-	return grouped
+	return grouped, nil
 }
 
 func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payment, error) {
-
 	if goroutines == 0 {
 		mu := sync.Mutex{}
 		payments := []types.Payment{}
@@ -612,30 +613,41 @@ func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payme
 		}()
 
 		wg.Wait()
-		return payments, nil
-	} else {
-
-		wg := sync.WaitGroup{}
-
-		mu := sync.Mutex{}
-		payments := []types.Payment{}
-
-		filteredPayments := s.FilterPaymentsForGoroutines(goroutines, accountID)
-		for _, fp := range filteredPayments {
-			wg.Add(1)
-			go func(fp []types.Payment) {
-				defer wg.Done()
-				mu.Lock()
-				payments = append(payments, fp...)
-				defer mu.Unlock()
-			}(fp)
-		}
-
-		wg.Wait()
 		if len(payments) == 0 {
-			return nil, nil
+
+			return nil, ErrAccountNotFound
 		}
+
 		return payments, nil
 	}
+
+	wg := sync.WaitGroup{}
+
+	mu := sync.Mutex{}
+	payments := []types.Payment{}
+
+	filteredPayments, err := s.FilterPaymentsForGoroutines(goroutines, accountID)
+	if err != nil {
+		return nil, err
+	}
+	if len(filteredPayments) == 0 {
+		return nil, nil
+	}
+	for _, fp := range filteredPayments {
+		wg.Add(1)
+		go func(fp []types.Payment) {
+			defer wg.Done()
+			mu.Lock()
+			payments = append(payments, fp...)
+			defer mu.Unlock()
+		}(fp)
+	}
+
+	wg.Wait()
+	if len(payments) == 0 {
+		return nil, nil
+	}
+
+	return payments, nil
 
 }
