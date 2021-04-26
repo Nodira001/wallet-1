@@ -3,12 +3,12 @@ package main
 import "fmt"
 
 func main() {
-	a := aaa(2)
+	a := aaa(3)
 
 	fmt.Println(a)
 }
 func aaa(count int) [][]int {
-	payments := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+	payments := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	grouped := [][]int{}
 	for i := 0; i < len(payments); i++ {
 		if i+count > len(payments)-1 {

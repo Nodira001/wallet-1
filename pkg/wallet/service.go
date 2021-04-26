@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-
 	"github.com/google/uuid"
 	"github.com/iqbol007/wallet/pkg/types"
 )
@@ -539,16 +538,15 @@ func (s *Service) SumPayments(goroutines int) types.Money {
 		return sum
 	}
 	wg := sync.WaitGroup{}
-	wg.Add(goroutines)
-	pys, _ := s.FilterPaymentsForGoroutines(goroutines)
-	for _, vp := range pys {
 
-		go func(vp []types.Payment) {
+	for _, vp := range s.payments {
+		wg.Add(1)
+		go func(vp *types.Payment) {
 			defer wg.Done()
 			val := types.Money(0)
-			for _, payment := range vp {
-				val += payment.Amount
-			}
+
+			val += vp.Amount
+
 			mu.Lock()
 			defer mu.Unlock()
 			sum += val
@@ -559,20 +557,20 @@ func (s *Service) SumPayments(goroutines int) types.Money {
 	return sum
 }
 
-func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int) ([][]types.Payment, error) {
-	// _, err := s.FindAccountByID(accountID)
-	// if err != nil {
-	// 	return nil, err
-	// }
+func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int64) ([][]types.Payment, error) {
+	_, err := s.FindAccountByID(accountID)
+	if err != nil {
+		return nil, err
+	}
 	pm := []types.Payment{}
 
 	for _, p := range s.payments {
 
-		// if p.AccountID == accountID {
+		if p.AccountID == accountID {
 
-		pm = append(pm, *p)
+			pm = append(pm, *p)
 
-		// }
+		}
 	}
 
 	grouped := [][]types.Payment{}
@@ -630,7 +628,7 @@ func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payme
 	mu := sync.Mutex{}
 	payments := []types.Payment{}
 
-	filteredPayments, err := s.FilterPaymentsForGoroutines(goroutines)
+	filteredPayments, err := s.FilterPaymentsForGoroutines(goroutines, accountID)
 	if err != nil {
 		return nil, err
 	}
