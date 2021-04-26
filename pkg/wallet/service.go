@@ -540,38 +540,39 @@ func (s *Service) SumPayments(goroutines int) types.Money {
 	}
 	wg := sync.WaitGroup{}
 	wg.Add(goroutines)
-	for i := 0; i < goroutines; i++ {
+	pys, _ := s.FilterPaymentsForGoroutines(goroutines)
+	for _, vp := range pys {
 
-		go func() {
+		go func(vp []types.Payment) {
 			defer wg.Done()
 			val := types.Money(0)
-			for _, payment := range s.payments {
+			for _, payment := range vp {
 				val += payment.Amount
 			}
 			mu.Lock()
 			defer mu.Unlock()
 			sum += val
-		}()
+		}(vp)
 	}
 
 	wg.Wait()
-	return sum / 10
+	return sum
 }
 
-func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int, accountID int64) ([][]types.Payment, error) {
-	_, err := s.FindAccountByID(accountID)
-	if err != nil {
-		return nil, err
-	}
+func (s *Service) FilterPaymentsForGoroutines(goroutinesCount int) ([][]types.Payment, error) {
+	// _, err := s.FindAccountByID(accountID)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	pm := []types.Payment{}
 
 	for _, p := range s.payments {
 
-		if p.AccountID == accountID {
+		// if p.AccountID == accountID {
 
-			pm = append(pm, *p)
+		pm = append(pm, *p)
 
-		}
+		// }
 	}
 
 	grouped := [][]types.Payment{}
@@ -629,7 +630,7 @@ func (s *Service) FilterPayments(accountID int64, goroutines int) ([]types.Payme
 	mu := sync.Mutex{}
 	payments := []types.Payment{}
 
-	filteredPayments, err := s.FilterPaymentsForGoroutines(goroutines, accountID)
+	filteredPayments, err := s.FilterPaymentsForGoroutines(goroutines)
 	if err != nil {
 		return nil, err
 	}
